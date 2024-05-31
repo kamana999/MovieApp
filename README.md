@@ -35,10 +35,14 @@ To set up and run this project locally, follow these steps:
     ```sh
     cd <project-directory>
     ```
-
-4. **Run the Project**: Use Docker Compose to build and run the project:
+4. **Create Environment File**: Create a `.env` file from the `.env.sample` file:
     ```sh
-    docker-compose up
+    cp .env.sample .env
+    ```
+
+5. **Run the Project**: Use Docker Compose to build and run the project:
+    ```sh
+    docker compose up
     ```
 
    When you run `docker-compose up`, a script will run and create a default user with the following credentials:
