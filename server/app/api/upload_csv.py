@@ -114,30 +114,18 @@ def get_file_list(user, *args, **kwargs):
         # Retrieve the paginated data
         data = paginator(csv_files_collection, rqst_args, search_allowed_fields, sort_allowed_fields)
 
-        if data['total_count'] > 0:  # If there are files
-            file_list = data['data']  # Get the list of files
+        file_list = data['data']  # Get the list of files
 
-            # Transform the file list to include the necessary fields and convert the IDs to strings
-            transformed_file_list = [{
-                **x, '_id': str(x['_id']),
-                'uploaded_by': str(x['uploaded_by']),
-            } for x in file_list]
+        # Transform the file list to include the necessary fields and convert the IDs to strings
+        transformed_file_list = [{
+            **x, '_id': str(x['_id']),
+            'uploaded_by': str(x['uploaded_by']),
+        } for x in file_list]
 
-            # Construct the response
-            return jsonify({
-                'total_count': data['total_count'],
-                'data': transformed_file_list,
-                'page': data['page'],
-                'page_size': data['page_size'],
-                'skip': data['skip']
-            })
-
-        logger.info('File not found')  # If no files are found, log a message
-
-        # Construct the response for no files found
+        # Construct the response
         return jsonify({
-            'total_count': 0,
-            'data': [],
+            'total_count': data['total_count'],
+            'data': transformed_file_list,
             'page': data['page'],
             'page_size': data['page_size'],
             'skip': data['skip']

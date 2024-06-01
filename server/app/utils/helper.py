@@ -41,11 +41,15 @@ def paginator(collection, rqst_args, search_allowed_fields, sort_allowed_fields)
     page = int(rqst_args.get('page', 1))
     page_size = int(rqst_args.get('page_size', default_page_size))
     skip = (page - 1) * page_size
+    if rqst_args.get('total_count', 'false') == 'true':
+        total_count = collection.count_documents(find_context)
+    else:
+        total_count = None
 
     # Return the total count, data, page, page_size, and skip
     return {
         # Count the number of documents in the collection that match the find context
-        'total_count': collection.count_documents(find_context) if find_context else collection.count_documents({}),
+        'total_count': total_count,
         # Find documents in the collection that match the find context,
         # skip a certain number of documents, limit the result to a certain number of documents,
         # and sort the result based on the sort parameter

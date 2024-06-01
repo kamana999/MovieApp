@@ -41,31 +41,21 @@ def get_movie_list(user, *args, **kwargs):
         search_allowed_fields = {'title': 1, 'type': 1, 'director': 1, 'country': 1, 'release_year': 1}
 
         # Define fields to be used for sorting
-        sort_allowed_fields = {'_id': 1, 'created_at': 1, 'updated_at': 1}
+        sort_allowed_fields = {'_id': 1, 'show_id': 1,'created_at': 1, 'updated_at': 1, 'release_year':-1, 'duration':-1, 'date_added':-1}
 
         # Get paginated movie data
         data = paginator(movies_collection, rqst_args, search_allowed_fields, sort_allowed_fields)
 
         # If movies are found, return their data
-        if data['total_count'] > 0:
-            movies = data['data']
-            return jsonify({
-                'total_count': data['total_count'],
-                'data': [{
-                    **movie, '_id': str(movie['_id']),
-                    'created_by': str(movie['created_by']),
-                    'sourced_from': str(movie['sourced_from'])
-                    } for movie in movies],
-                'page': data['page'],
-                'page_size': data['page_size'],
-                'skip': data['skip']
-            })
-
-        # If movies are not found, log a message and return a 404 response
-        logger.info('Movies not found')
+        
+        movies = data['data']
         return jsonify({
-            'total_count': 0,
-            'data': [],
+            'total_count': data['total_count'],
+            'data': [{
+                **movie, '_id': str(movie['_id']),
+                'created_by': str(movie['created_by']),
+                'sourced_from': str(movie['sourced_from'])
+                } for movie in movies],
             'page': data['page'],
             'page_size': data['page_size'],
             'skip': data['skip']

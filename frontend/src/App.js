@@ -10,13 +10,14 @@ import PrivateRoutes from './routes/ProtectedRoute';
 
 
 const App = () => {
+  const isLoggedIn = localStorage.getItem("token") ? true : false;
   return (
     <>
     <NavBar />
     <Container >
         <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/movie_list" />} />
+          <Route path="/" element={isLoggedIn ? <Navigate to="/movie_list" /> : <Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route element={<PrivateRoutes />}>
                 <Route element={<MoviesList/>} path="/movie_list" exact/>

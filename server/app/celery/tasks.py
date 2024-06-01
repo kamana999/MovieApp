@@ -70,6 +70,7 @@ def process_csv(file_id):
                         df['updated_at'] = datetime.now()
                         df['created_by'] = file['uploaded_by']
                         df['sourced_from'] = file['_id']
+                        df['date_added'] = df['date_added'].apply(lambda x: datetime.strptime(x, '%B %d, %Y'))
 
                         # Replace null values with empty strings
                         df = df.fillna('')
